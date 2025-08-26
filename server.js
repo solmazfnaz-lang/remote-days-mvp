@@ -1,4 +1,12 @@
-/**
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Remote Days MVP server running on http://localhost:${PORT}`);
+  console.log('Use header X-User-Id with one of:', db.users.map(u => `${u.id}(${u.role})`).join(', '));
+  console.log('Demo flow:');
+  console.log('1) As EMPLOYEE (U1): POST /requests {start_date,end_date,type:"SET_REMOTE"}');
+  console.log('2) As MANAGER (U3):   GET /requests/team -> POST /requests/:id/approve');
+  console.log('3) As EMPLOYEE (U1): GET /calendar/my -> see REMOTE day');
+});/**
  * Remote Days MVP — Express backend (in-memory)
  * v0.1 — single-file server you can run immediately
  *
@@ -12,11 +20,11 @@
  *   - Available seeded users are listed in the logs at startup
  */
 
-const express = require('express');
-const cors = require('cors');
-const dayjs = require('dayjs');
-const utc = require('dayjs/plugin/utc');
-const isoWeek = require('dayjs/plugin/isoWeek');
+import express from 'express';
+import cors from 'cors';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc.js';
+import isoWeek from 'dayjs/plugin/isoWeek.js';
 
 dayjs.extend(utc);
 dayjs.extend(isoWeek);
@@ -112,6 +120,11 @@ function logAudit(actor_id, entity_type, entity_id, action, old_value, new_value
 }
 
 // ------- API -------
+
+// Root helper
+app.get('/', (req, res) => {
+  res.send('Remote Days MVP API is running. Try /health, /me, /requests, /calendar/my');
+});
 
 app.get('/me', (req, res, next) => {
   try { const me = getUser(req); res.json(me); } catch (e) { next(e); }
