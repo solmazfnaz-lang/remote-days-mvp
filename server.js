@@ -12,11 +12,11 @@
  *   - Available seeded users are listed in the logs at startup
  */
 
-import express from 'express';
-import cors from 'cors';
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc.js';
-import isoWeek from 'dayjs/plugin/isoWeek.js';
+const express = require('express');
+const cors = require('cors');
+const dayjs = require('dayjs');
+const utc = require('dayjs/plugin/utc');
+const isoWeek = require('dayjs/plugin/isoWeek');
 
 dayjs.extend(utc);
 dayjs.extend(isoWeek);
